@@ -2,6 +2,8 @@ from typing import List
 
 #Initialize an empty line
 blockchain = list()
+open_transactions = list()
+owner = 'Rob'
 
 def get_last_blockchain_value () -> List[int]:
     '''Return last value of the current blockchain'''
@@ -9,19 +11,28 @@ def get_last_blockchain_value () -> List[int]:
         return None
     return blockchain[-1]
 
-def add_transaction(transaction_amout: int, last_transaction=[1]) -> None:
+def add_transaction(recipient, sender=owner, amount=1.0) -> None:
     ''' Append new value
         Args: 
-            :transaction_amout: Amount to be added
-            :last_transaction: Last blockchain transaction (default [1])
+            :sender: Sender of transaction
+            :recepient: Recipient of transaction
+            :amout: Amount sent in transaction
     '''
-    if last_transaction == None:
-        last_transaction = [1]
-    blockchain.append([last_transaction,transaction_amout])
+    trasaction = { 'sender': sender,
+                   'recipient': recipient, 
+                   'amount':amount
+                }
+    open_transactions.append(trasaction)
+
+def mine_block():
+    '''Will be adding a new block'''
+    pass
 
 def get_transaction_value() -> float:
     '''Returns user input as a float'''
-    return float(input('Transaction amount: '))
+    tx_recipient = input('Transaction recipient: ')
+    tx_amount = float(input('Transaction amount: '))
+    return (tx_recipient, tx_amount) 
 
 def get_user_choice() -> float:
     '''Returns user input as a float'''
@@ -58,14 +69,19 @@ while waiting_for_input:
     
     user_choice = get_user_choice()
     if user_choice=='1':
-        tx_amount = get_transaction_value()
-        add_transaction(tx_amount, get_last_blockchain_value())
+        tx_data = get_transaction_value()
+        recipient, amount = tx_data
+    # Add transaction to blockchain
+        add_transaction(recipient, amount=amount)
+        print(open_transactions)
     elif user_choice=='2':
         print_blockchain_elements()
     elif user_choice.lower()=='h':
+        # Make sure we edit a blockchain that is not empty
         if len(blockchain) >= 1:
             blockchain[0] = [2]
     elif user_choice.lower()=='q':
+        # Exit as user has requested
         waiting_for_input = False
     else:
         print("Invalid input. Try again")
