@@ -1,13 +1,34 @@
 from typing import List
 
-#Initialize an empty line
+MINING_REWARD = 10
+
 genesis_block = {'previous_hash': '', 'index': 0, 'transactions': []}
 blockchain = [genesis_block]
 open_transactions = list()
 owner = 'Rob'
+participants = set()
 
-def hash_block(block):
+def hash_block(block) -> str:
+    '''Retun a string representation of the transaction
+    Args:
+        :block: The current block to represent
+    '''
     return '-'.join([str(block[key]) for key in block])
+
+def get_balance(participant) -> int:
+    '''Returns the balance for a given participant'''
+    tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == participant] for block in blockchain]
+    amount_sent = 0
+    for tx in tx_sender:
+        if len(tx) > 0:
+            amount_sent += tx[0]
+    
+    tx_recipient = [[tx['amount'] for tx in block['transactions'] if tx['recipient'] == participant] for block in blockchain]
+    amount_received = 0
+    for tx in tx_recipient:
+        if len(tx) > 0:
+            amount_received += tx[0]
+    return amount_received - amount_sent
 
 def get_last_blockchain_value () -> List[int]:
     '''Return last value of the current blockchain'''
@@ -27,17 +48,26 @@ def add_transaction(recipient, sender=owner, amount=1.0) -> None:
                    'amount':amount
                 }
     open_transactions.append(transaction)
+    participants.add(sender)
+    participants.add(recipient)
 
-def mine_block() -> None:
+
+def mine_block() -> bool:
     '''Will be adding a new block'''
     last_block = blockchain[-1]
     hashed_block = hash_block(last_block)
-
+    reward_transaction = {
+        'sender': 'MINING',
+        'recipient': owner,
+        'amount': MINING_REWARD
+    }
+    open_transactions.append(reward_transaction)
     block = {'previous_hash': hashed_block,
              'index': len(blockchain),
              'transactions': open_transactions
             }
     blockchain.append(block)
+    return True
 
 def get_transaction_value() -> tuple:
     '''Returns user input as a float'''
@@ -71,6 +101,7 @@ while waiting_for_input:
           1.Add new transaction \n \
           2.Mine new block \n \
           3.Output blocks \n \
+          4.List participants \n \
           h.Manipulate blockchain \n \
           q.Quit"  )
     
@@ -82,9 +113,12 @@ while waiting_for_input:
         add_transaction(recipient, amount=amount)
         print(open_transactions)
     elif user_choice=='2':
-        mine_block()
+        if mine_block():
+            open_transactions = []
     elif user_choice=='3':
         print_blockchain_elements()
+    elif user_choice=='4':
+        print(participants)
     elif user_choice.lower()=='h':
         # Make sure we edit a blockchain that is not empty
         if len(blockchain) >= 1:
@@ -102,6 +136,7 @@ while waiting_for_input:
         print_blockchain_elements()
         print("Invalid blockchain!")
         break
+    print(get_balance('Rob'))
 else:
     print("User Left!")
 
