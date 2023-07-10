@@ -104,6 +104,9 @@ def verify_blockchain() -> bool:
             return False
     return True
 
+def verify_transactions() -> bool:
+    return all([verify_transaction(tx) for tx in open_transactions])
+
 waiting_for_input = True
 while waiting_for_input:
 
@@ -112,6 +115,7 @@ while waiting_for_input:
           2.Mine new block \n \
           3.Output blocks \n \
           4.List participants \n \
+          5.Check transactions validity \n \
           h.Manipulate blockchain \n \
           q.Quit"  )
     
@@ -132,6 +136,11 @@ while waiting_for_input:
         print_blockchain_elements()
     elif user_choice=='4':
         print(participants)
+    elif user_choice=='5':
+        if verify_transactions():
+            print('Transactions status OK')
+        else:
+            print('There is at least one invalid transaction')
     elif user_choice.lower()=='h':
         # Make sure we edit a blockchain that is not empty
         if len(blockchain) >= 1:
