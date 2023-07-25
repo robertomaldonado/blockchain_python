@@ -16,7 +16,7 @@ def hash_block(block) -> str:
     Args:
         :block: The current block to represent
     '''
-    return hl.sha256(json.dumps(block).encode()).hexdigest()
+    return hl.sha256(json.dumps(block, sort_keys=True).encode()).hexdigest()
 
 def valid_proof(transactions, last_hash, proof) -> bool:
     guess = (str(transactions) + str(last_hash) + str(proof)).encode()
