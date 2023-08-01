@@ -1,7 +1,7 @@
 from functools import reduce
 import hashlib as hl
 from typing import List
-
+import json
 from hash_util import hash_string_256, hash_block
 
 MINING_REWARD = 10
@@ -11,6 +11,22 @@ blockchain = [genesis_block]
 open_transactions = list()
 owner = 'Rob'
 participants = {owner}
+
+def save_data():
+    with open("blockchain.txt", mode="w") as f:
+        f.write(json.dumps(blockchain))
+        f.write("/n")
+        f.write(json.dumps(blockchain))
+
+def load_data():
+    with open("blockchain.txt", mode="r") as f:
+        file_content = f.readlines()
+        global blockchain
+        global open_transactions
+        blockchain = json.loads(file_content[0][:-1])
+        open_transactions = json.loads(file_content[1])
+
+load_data()
 
 def valid_proof(transactions, last_hash, proof) -> bool:
     guess = (str(transactions) + str(last_hash) + str(proof)).encode()
@@ -63,6 +79,7 @@ def add_transaction(recipient, sender=owner, amount=1.0) -> None:
         open_transactions.append(transaction)
         participants.add(sender)
         participants.add(recipient)
+        save_data()
         return True
     return False
 
@@ -86,6 +103,7 @@ def mine_block() -> bool:
              'proof': proof
             }
     blockchain.append(block)
+    save_data()
     return True
 
 def get_transaction_value() -> tuple:
