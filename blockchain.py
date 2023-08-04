@@ -2,6 +2,7 @@ from functools import reduce
 import hashlib as hl
 from typing import List
 import json
+# import pickle
 from hash_util import hash_string_256, hash_block
 from collections import OrderedDict
 
@@ -18,9 +19,19 @@ def save_data():
         f.write(json.dumps(blockchain))
         f.write("\n")
         f.write(json.dumps(open_transactions))
+        # save_data = {
+        #     'chain': blockchain, 
+        #     'ot': open_transactions
+        # }
+        # f.write(pickle.dumps(save_data))
 
 def load_data():
     with open("blockchain.txt", mode="r") as f:
+        # file_content = pickle.loads(f.read())
+        # global blockchain
+        # global open_transactions
+        # blockchain = file_content['chain']
+        # open_transactions = file_content['ot']
         file_content = f.readlines()
         global blockchain
         global open_transactions
