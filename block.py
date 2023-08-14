@@ -1,5 +1,7 @@
 from time import time
-class Block:
+from printable import Printable
+
+class Block(Printable):
   def __init__(self, index, previous_hash, transactions, proof, timestamp=None) -> None:
     self.index = index
     self.previous_hash = previous_hash
