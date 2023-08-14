@@ -177,9 +177,7 @@ while waiting_for_input:
           1.Add new transaction \n \
           2.Mine new block \n \
           3.Output blocks \n \
-          4.List participants \n \
-          5.Check transactions validity \n \
-          h.Manipulate blockchain \n \
+          4.Check transactions validity \n \
           q.Quit"  )
     
     user_choice = get_user_choice()
@@ -199,8 +197,6 @@ while waiting_for_input:
     elif user_choice=='3':
         print_blockchain_elements()
     elif user_choice=='4':
-        print(participants)
-    elif user_choice=='5':
         if verify_transactions():
             print('Transactions status OK')
         else:
