@@ -11,7 +11,7 @@ from verification import Verification
 MINING_REWARD = 10
 
 class Blockchain:
-    def __init__(self) -> None:
+    def __init__(self, hosting_node_id) -> None:
         #Our starting block for the blockchain
         genesis_block = Block(0, '', [], 100, 0)
         # Init empty blockchain list
@@ -19,6 +19,7 @@ class Blockchain:
         # Unhandled transactions
         self.open_transactions = list()
         self.load_data()
+        self.hosting_node = hosting_node_id
 
     def load_data(self):
         try:
@@ -72,8 +73,9 @@ class Blockchain:
             proof += 1
         return proof
  
-    def get_balance(self, participant) -> int:
+    def get_balance(self) -> int:
         '''Returns the balance for a given participant'''
+        participant = self.hosting_node
         tx_sender = [[tx.amount for tx in block.transactions 
                     if tx.sender == participant] for block in self.chain]
         open_tx_sender  = [tx.amount
@@ -110,14 +112,16 @@ class Blockchain:
             return True
         return False
 
-    def mine_block(self, node) -> bool:
+    def mine_block(self) -> bool:
         '''Will be adding a new block'''
         last_block = self.chain[-1]
         hashed_block = hash_block(last_block)
         proof = self.proof_of_work()
-        reward_transaction = Transaction('MINING', node, MINING_REWARD)
+        reward_transaction = Transaction('MINING', self.hosting_node, MINING_REWARD)
         copied_transactions = self.open_transactions[:]
         copied_transactions.append(reward_transaction)
         block = Block(len(self.chain), hashed_block, copied_transactions, proof)
         self.chain.append(block)
+        self.open_transactions = []
+        self.save_data()
         return True
