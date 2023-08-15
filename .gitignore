@@ -1,5 +1,6 @@
 /.vscode
 __pycache__
 blockchain.txt
+wallet.txt
 utility/__pycache__
 /pycoin
