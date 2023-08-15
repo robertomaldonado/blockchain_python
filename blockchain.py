@@ -3,10 +3,10 @@ import hashlib as hl
 from typing import List
 import json
 # import pickle
-from hash_util import hash_string_256, hash_block
-from collections import OrderedDict
+from hash_util import hash_block
 from block import Block
 from transaction import Transaction
+from verification import Verification
 
 MINING_REWARD = 10
 # Init empty blockchain list
@@ -68,17 +68,12 @@ def save_data():
     except IOError:
         print("Saving failed!")
 
-def valid_proof(transactions, last_hash, proof) -> bool:
-    guess = (str([tx.to_ordered_dict() for tx in transactions]) + str(last_hash) + str(proof)).encode()
-    guess_hash = hash_string_256(guess)
-    # print(guess_hash)
-    return guess_hash[0:2] == "00"
-
 def proof_of_work():
     last_block = blockchain[-1]
     last_hash = hash_block(last_block)
     proof = 0
-    while not valid_proof(open_transactions, last_hash, proof):
+    verifier = Verification()
+    while not verifier.valid_proof(open_transactions, last_hash, proof):
         proof += 1
     return proof
  
@@ -105,10 +100,6 @@ def get_last_blockchain_value () -> List[int]:
         return None
     return blockchain[-1]
 
-def verify_transaction(transaction)-> bool:
-    sender_balance = get_balance(transaction.sender)
-    return sender_balance >= transaction.amount
-
 def add_transaction(recipient, sender=owner, amount=1.0) -> None:
     ''' Append new value
         Args: 
@@ -117,14 +108,14 @@ def add_transaction(recipient, sender=owner, amount=1.0) -> None:
             :amout: Amount sent in transaction
     '''
     transaction = Transaction(sender, recipient, amount)
-    if verify_transaction(transaction):
+    verifier = Verification()
+    if verifier.verify_transaction(transaction, get_balance):
         open_transactions.append(transaction)
         # participants.add(sender)
         # participants.add(recipient)
         save_data()
         return True
     return False
-
 
 def mine_block() -> bool:
     '''Will be adding a new block'''
@@ -155,21 +146,6 @@ def print_blockchain_elements() -> None:
     else:
         print('-'*40)
 
-def verify_blockchain() -> bool:
-    '''Verfy chain'''
-    for (index, block) in enumerate(blockchain):
-        if index == 0: 
-            continue
-        if block.previous_hash != hash_block(blockchain[index-1]):
-            return False
-        if not valid_proof(block.transactions[:-1], block.previous_hash, block.proof):
-            print("Proof of work is invalid")
-            return False
-    return True
-
-def verify_transactions() -> bool:
-    return all([verify_transaction(tx) for tx in open_transactions])
-
 waiting_for_input = True
 while waiting_for_input:
 
@@ -197,7 +173,8 @@ while waiting_for_input:
     elif user_choice=='3':
         print_blockchain_elements()
     elif user_choice=='4':
-        if verify_transactions():
+        verifier = Verification()
+        if verifier.verify_transactions(open_transactions, get_balance):
             print('Transactions status OK')
         else:
             print('There is at least one invalid transaction')
@@ -206,7 +183,8 @@ while waiting_for_input:
         waiting_for_input = False
     else:
         print("Invalid input. Try again")
-    if not verify_blockchain():
+    verifier = Verification()
+    if not verifier.verify_blockchain(blockchain):
         print_blockchain_elements()
         print("Invalid blockchain!")
         break
