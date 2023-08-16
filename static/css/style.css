@@ -1,0 +1,269 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: hsl(0, 0%, 11%);
+  background-color: hsl(0, 0%, 92%);
+  padding-bottom: 20px;
+  margin: 0;
+}
+
+header {
+  background-color: hsl(249, 70%, 26%);
+  color: hsl(42, 100%, 50%);
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  display: block;
+  padding: 30px;
+}
+
+footer {
+  font-size: xx-small;
+  font-family: sans-serif;
+  padding-top: 25px;
+  padding-left: 44%;
+}
+
+img {
+  height: 425px;
+  width: 1000px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#navigation-bar {
+  background-color: hsl(230, 27%, 75%);
+  position: sticky;
+  top: 0;
+}
+
+#navigation-bar a {
+  color: hsl(209, 29%, 18%);
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+  padding: 20px;
+}
+
+#navigation-bar a:hover {
+  color: hsl(10, 100%, 45%);
+}
+
+#content {
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+#header-banner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#logo {
+  width: 69px;
+  height: 69px;
+  align-self: center;
+  padding-left: 15px;
+}
+
+.section-title {
+  color: hsl(44, 100%, 28%);
+  font-size: x-large;
+  padding-top: 5px;
+  margin: 0;
+}
+
+.adopt-post {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 45px;
+}
+
+.pet-post-name {
+  font-family: Arial, Helvetica, sans-serif;
+  color: hsl(45, 100%, 29%);
+  padding-bottom: 10px;
+  margin: 0;
+}
+
+.adopt-post-image {
+  width: 500px;
+  height: auto;
+}
+
+.adopt-post-info {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.adopt-post-more {
+  margin-bottom: 0;
+}
+
+.review-post {
+  display: grid;
+  grid-template-rows: 125px;
+  padding-bottom: 150px;
+}
+
+.review-post-image {
+  width: 450px;
+  height: 450px;
+  padding-bottom: 50px;
+}
+
+.review-post-info {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  display: grid;
+  grid-template-columns: 600px;
+  padding-left: 500px;
+}
+
+.review-post-title {
+  font-size: xx-large;
+  color: hsl(261, 98%, 45%);
+}
+
+.review-post-rating {
+  font-size: x-large;
+  margin: 0;
+}
+
+.blog-post {
+  border: 2px hsl(0, 0%, 11%) solid;
+  border-radius: 4px;
+  border-collapse: collapse;
+  display: flex;
+  flex-direction: column;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.blog-post a {
+  width: fit-content;
+  color: hsl(45, 100%, 29%);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.blog-post a:hover {
+  color: hsl(261, 98%, 45%);
+}
+
+.blog-post-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.blog-post-form-title {
+  display: grid;
+  grid-template-columns: 75px 520px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.blog-post-form-content {
+  display: grid;
+  grid-template-columns: 75px 600px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.blog-post-form-title-box {
+  resize: none;
+  width: 65%;
+}
+
+.blog-post-form-content-box {
+  resize: none;
+  width: 95%;
+  font-family: sans-serif;
+}
+
+.blog-post-form-title-box:focus {
+  outline: none;
+  border: 2px solid hsl(261, 98%, 45%);
+  ;
+}
+
+.blog-post-form-content-box:focus {
+  outline: none;
+  border: 2px solid hsl(261, 98%, 45%);
+}
+
+.blog-post-form-submit {
+  width: 75px;
+  height: 35px;
+  color: hsl(249, 70%, 26%);
+  background-color: hsl(42, 100%, 50%);
+  font-size: large;
+  border: none;
+  align-self: center;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.old-post {
+  display: block;
+  width: fit-content;
+  border: 1px dashed hsl(261, 98%, 45%);
+  border-radius: 2px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 15px;
+}
+
+.update-form {
+  display: grid;
+  grid-template-columns: auto;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.update-title-form {
+  display: grid;
+  grid-template-columns: auto;
+  margin-bottom: 20px;
+}
+
+.update-title-form input {
+  max-width: 40%;
+  margin-top: 5px;
+}
+
+.update-content-form {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.update-content-form textarea {
+  font-family: sans-serif;
+  resize: none;
+  max-width: 60%;
+  height: 45px;
+  margin-top: 5px;
+}
+
+.edit-button {
+  width: 75px;
+  height: 35px;
+  margin-top: 20px;
+  margin-left: 5px;
+  background-color: hsl(42, 100%, 50%);
+  font-size: large;
+  border: none;
+  align-self: center;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: hsl(0, 0%, 92%);
+  border-color: hsl(10, 100%, 45%);
+  color: hsl(10, 100%, 45%);
+  cursor: pointer;
+}
+
+.flash-message {
+  color: hsl(10, 100%, 45%);
+}
